@@ -2,6 +2,7 @@
 """
 定义一个电影类，类里面，定义了初始化函数，和 打开电影预告片的函数
 """
+
 import webbrowser
 
 class Movie():

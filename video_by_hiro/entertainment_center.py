@@ -2,6 +2,7 @@
 """
 初始化几个电影类的实例，用于生成一个电影网站
 """
+
 import fresh_tomatoes
 import media
 
