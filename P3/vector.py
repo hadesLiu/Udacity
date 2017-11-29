@@ -1,3 +1,6 @@
+from math import sqrt, acos, pi
+
+
 class Vector(object):
     def __init__(self, coordinates):
         try:
@@ -36,17 +39,82 @@ class Vector(object):
         new_coordinates = [c*x for x in self.coordinates]
         return Vector(new_coordinates)
 
-v = Vector([8.218, -9.341])
-w = Vector([-1.129, 2.111])
-print v.plus(w)
+    def magnitude(self):
+        coordinate_squared = [ x**2 for x in self.coordinates]
+        return sqrt(sum(coordinate_squared))
 
-v = Vector([7.119, 8.215])
-w = Vector([-8.223, 0.878])
-print v.minus(w)
+    def normalized(self):
+        try:
+            magnitude = self.magnitude()
+            return self.times_scalar(1./magnitude)
+        except ZeroDivisionError:
+            raise Exception('Cannot normalize the zero vector')
 
-v = Vector([1.671, -1.012, -0.318])
-c = 7.41
-print v.times_scalar(c)
+    def inner_product(self, v):
+        new_coordinates = [x * y for x, y in zip(self.coordinates, v.coordinates)]
+        return sum(new_coordinates)
+
+    # def angle_with(self, v, in_degrees=False):
+    #     angle_in_radians = acos(self.inner_product(v)/(self.magnitude() * v.magnitude()))
+    #     if in_degrees:
+    #         degrees_per_radian = 180. / pi
+    #         return angle_in_radians * degrees_per_radian
+    #     else:
+    #         return angle_in_radians
+
+    def angel_with(self, v, in_degrees=False):
+        u1 = self.normalized()
+        u2 = v.normalized()
+        angle_in_radians = acos(u1.dot(u2))
+
+        if in_degrees:
+            degrees_per_radian = 180. / pi
+            return angle_in_radians * degrees_per_radian
+        else:
+            return angle_in_radians
+
+v = Vector([7.887, 4.138])
+w = Vector([-8.802, 6.776])
+print v.inner_product(w)
+
+v = Vector([-5.955, -4.904, -1.874])
+w = Vector([-4.496, -8.755, 7.103])
+print v.inner_product(w)
+
+v = Vector([3.183, -7.627])
+w = Vector([-2.668, 5.319])
+print v.angle_with(w, in_degrees=False)
+
+v = Vector([7.35, 0.221, 5.188])
+w = Vector([2.751, 8.259, 3.985])
+print v.angle_with(w, in_degrees=True)
+
+
+
+# v = Vector([-0.221, 7.437])
+# print v.magnitude()
+#
+# v = Vector([8.813, -1.331, -6.247])
+# print v.magnitude()
+#
+# v = Vector([5.581, -2.136])
+# print v.normalized()
+#
+# v = Vector([1.996, 3.108, -4.554])
+# print v.normalized()
+
+
+# v = Vector([8.218, -9.341])
+# w = Vector([-1.129, 2.111])
+# print v.plus(w)
+#
+# v = Vector([7.119, 8.215])
+# w = Vector([-8.223, 0.878])
+# print v.minus(w)
+#
+# v = Vector([1.671, -1.012, -0.318])
+# c = 7.41
+# print v.times_scalar(c)
 
 
 # myVector = Vector([1, 2, 3])
