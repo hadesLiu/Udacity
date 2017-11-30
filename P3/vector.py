@@ -84,8 +84,25 @@ class Vector(object):
                 raise Exception('Cannot compute an angle with the zero vector')
             else:
                 raise e
-#
-#
+
+    def is_orthogona_to(self, v, tolerance=1e-10):
+        return abs(self.dot(v)) < tolerance
+
+    def parallel(self, v):
+        return (self.is_zero() or
+                v.is_zero() or
+                self.angle_with(v) == 0 or
+                self.angle_with(v) == pi)
+
+    def is_zero(self, tolerance=1e-10):
+        return self.magnitude() < tolerance
+
+
+
+
+
+
+
 # v = Vector([7.887, 4.138])
 # w = Vector([-8.802, 6.776])
 # print v.dot(w)
@@ -113,8 +130,8 @@ class Vector(object):
 # v = Vector([8.813, -1.331, -6.247])
 # print v.magnitude()
 #
-v = Vector([5.581, -2.136])
-print v.normalized()
+# v = Vector([5.581, -2.136])
+# print v.normalized()
 #
 # v = Vector([1.996, 3.108, -4.554])
 # print v.normalized()
