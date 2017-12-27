@@ -123,11 +123,36 @@ class Line(object):
 
         return n1.is_parallel_to(n2)
 
+    def interaction_with(self, ell):
+        try:
+            A, B = self.normal_vector.coordinates
+            C, D = ell.normal_vector.coordinates
+            k1 = self.constant_term
+            k2 = ell.constant_term
 
+            x_numberator = D*k1 - B*k2
+            y_numberator = -C*k1 + A*k2
+            one_over_denom = Decimal('1') / (A*D - B*C)
 
-
-
+            return Vector([x_numberator, y_numberator]).times_scalar(one_over_denom)
+        except ZeroDivisionError:
+            if self == ell:
+                return self
+            else:
+                return None
 
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+ell1 = Line(normal_vector=Vector(['4.046', '2.836']), constant_term='1.21')
+ell2 = Line(normal_vector=Vector(['10.115', '7.09']), constant_term='3.025')
+print "interaction 1: ", ell1.interaction_with(ell2)
+    
+ell1 = Line(normal_vector=Vector(['7.204', '3.182']), constant_term='8.68')
+ell2 = Line(normal_vector=Vector(['8.172', '4.114']), constant_term='9.883')
+print "interaction 2: ", ell1.interaction_with(ell2)
+#
+ell1 = Line(normal_vector=Vector(['1.182', '5.562']), constant_term='6.744')
+ell2 = Line(normal_vector=Vector(['1.773', '8.343']), constant_term='9.525')
+print "interaction 3: ", ell1.interaction_with(ell2)
