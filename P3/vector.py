@@ -18,6 +18,7 @@ class Vector(object):
             self.coordinates = tuple(Decimal(x) for x in coordinates)
             # self.coordinates = tuple(x for x in coordinates)
             self.dimension = len(coordinates)
+            self.idx = 0
 
         except ValueError:
             raise ValueError('The coordinates must be nonempty')
@@ -25,6 +26,19 @@ class Vector(object):
         except TypeError:
             raise TypeError('The coordinates must be an iterable')
 
+    def __iter__(self):
+        return self
+
+    def next(self):
+       self.idx += 1
+       try:
+           return Decimal(self.coordinates[self.idx-1])
+       except IndexError:
+           self.idx = 0
+           raise StopIteration  # Done iterating.
+
+    def __getitem__(self,index):
+        return Decimal(self.coordinates[index])
 
     def __str__(self):
         # return 'Vector: {}'.format(self.coordinates)
@@ -33,10 +47,6 @@ class Vector(object):
 
     def __eq__(self, v):
         return self.coordinates == v.coordinates
-
-
-    def __getitem__(self, item):
-        return self.coordinates[item]
 
     def plus(self, v):
         new_coordinates = [x+y for x,y in zip(self.coordinates, v.coordinates)]
